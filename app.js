@@ -1,24 +1,25 @@
 const wait = async (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const oscillators = [];
-for (let i = 0; i < 12; i++) {
+const playAt = async (ord, ms) => {
     const osc = audioCtx.createOscillator();
     osc.type = 'sine';
-    osc.frequency.value = 220 * Math.pow(2, i/12);
+    osc.frequency.value = 261.63 * Math.pow(octave, (1 / div) * ord );
     osc.connect(audioCtx.destination);
-    oscillators.push(osc);
-}
+    osc.start();
+    await wait(ms);
+    osc.stop();
+};
+const div = 11;
+const octave = 2;
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const score = [0, 2, 4, 5, 7, 5, 4, 2, 0];
 
 document.querySelector("#play").addEventListener("click", async () => {
     if (audioCtx.state === "suspended") {
         audioCtx.resume();
     }
-    for (const osc of oscillators) {
-        osc.start();
-        await wait(500);
-        osc.stop();
-        await wait(100);
+    for (const note of score) {
+        await playAt(note, 500);
     }
 });
 
