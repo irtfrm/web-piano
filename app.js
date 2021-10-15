@@ -14,55 +14,45 @@ const pureLowerRe = (tonic, degree) => {
     return 	tonic * ratio[mod(degree, 12)] * (2 ** (Math.floor(degree / 12)));
 };
 
+const getPeriodicFromWeights = (weights) => {
+    const n = weights.length;
+    const real = new Float32Array(n);
+    const imag = new Float32Array(n);
+    for(let i = 0; i < n; ++i) {
+        real[i] = 0;
+        imag[i] = weights[i]
+    }
+    return audioCtx.createPeriodicWave(real, imag);
+}
+
 const playFor = async (pitch, ms) => {
     const oscs = [];
-    const fundamental = pitch;
-    const weights = [0.8, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05, 0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005];
-    const master = 0.04;
+    const weights = [0, 0.8, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05, 0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005];
+    const periodic = getPeriodicFromWeights(weights);
 
-    i = 1;
-    for (const weight of weights) {
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        gainNode.gain.value = weight * master;
-        osc.type = 'sine';
-        osc.frequency.value = fundamental * i;
-        osc.connect(gainNode).connect(audioCtx.destination);
-        oscs.push(osc);
-        i++;
-    }
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.frequency.value = pitch;
+    osc.connect(gainNode).connect(audioCtx.destination);
+    osc.setPeriodicWave(periodic);
 
-    for (const osc of oscs) {
-        osc.start();
-    }
+    osc.start();
     await wait(ms);
-    for (const osc of oscs) {
-        osc.stop();
-    }
+    osc.stop();
 };
 
 const playAt = (pitch) => {
-    const oscs = [];
-    const fundamental = pitch;
-    const weights = [0.8, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05, 0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005];
-    const master = 0.02;
+    const weights = [0, 0.8, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05, 0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005];
+    const periodic = getPeriodicFromWeights(weights);
 
-    i = 1;
-    for (const weight of weights) {
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        gainNode.gain.value = weight * master;
-        osc.type = 'sine';
-        osc.frequency.value = fundamental * i;
-        osc.connect(gainNode).connect(audioCtx.destination);
-        oscs.push(osc);
-        i++;
-    }
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.frequency.value = pitch;
+    osc.connect(gainNode).connect(audioCtx.destination);
+    osc.setPeriodicWave(periodic);
 
-    for (const osc of oscs) {
-        osc.start();
-    }
-    return oscs;
+    osc.start();
+    return osc;
 };
 
 const stopOscs = (oscs) => {
@@ -177,24 +167,6 @@ keys.forEach(key=>{
   key.addEventListener('mouseout', ()=>stopPiano(key.getAttribute('deg')));
 });
 
-const pianoOscs = {}
-function playPiano(degree, lowerRe) {
-  if (degree in pianoOscs)
-    stopOscs(pianoOscs[degree]);
-  const tonic = getTonic();
-  let tone = getTone();
-
-  if (tone === pure && lowerRe) {
-      tone = pureLowerRe;
-  }
-  pianoOscs[degree] = playAt(tone(tonic, degree));
-}
-
-function stopPiano(degree) {
-    if (degree in pianoOscs)
-        stopOscs(pianoOscs[degree]);
-}
-
 was_key_down = {};
 keyboardMap = {'q': 0, 'Q': 0, '2': 1, '"': 1, 'w': 2, 'W': 2, '3': 3, '#': 3, 'e': 4, 'E': 4, 'r': 5, 'R': 5, '5': 6, '%': 6, 't': 7, 'T': 7, '6': 8, '&': 8, 'y': 9, 'Y': 9, '7': 10, "'": 10, 'u': 11, 'U': 11, 'i': 12, 'I': 12, '9': 13, ')': 13, 'o': 14, 'O': 14, '0': 15, 'p': 16, 'P': 16, '@': 17, '`': 17, '^': 18, '~': 18, '[': 19, '{': 19, '\\': 20, '|': 20, ']': 21, }
 document.body.addEventListener('keydown',
@@ -219,3 +191,22 @@ document.body.addEventListener('keyup',
             myPromise.then(stopPiano);
         }
     });
+
+const pianoOscs = {};
+
+function playPiano(degree, lowerRe) {
+  if (degree in pianoOscs)
+    stopOscs(pianoOscs[degree]);
+  const tonic = getTonic();
+  let tone = getTone();
+
+  if (tone === pure && lowerRe) {
+      tone = pureLowerRe;
+  }
+  pianoOscs[degree] = [playAt(tone(tonic, degree))];
+}
+
+function stopPiano(degree) {
+    if (degree in pianoOscs)
+        stopOscs(pianoOscs[degree]);
+}
