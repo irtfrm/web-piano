@@ -3,6 +3,7 @@
   width: min(100vw, 1120px);
   height: min(28.57vw, 320px);
   margin: 1em 0;
+  user-select:none;
 }
 
 .white {

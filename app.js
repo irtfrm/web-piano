@@ -36,6 +36,36 @@ const playFor = async (pitch, ms) => {
     }
 };
 
+const playAt = (pitch) => {
+    const oscs = [];
+    const fundamental = pitch;
+    const weights = [0.8, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05, 0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005];
+    const master = 0.04;
+
+    i = 1;
+    for (const weight of weights) {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = weight * master;
+        osc.type = 'sine';
+        osc.frequency.value = fundamental * i;
+        osc.connect(gainNode).connect(audioCtx.destination);
+        oscs.push(osc);
+        i++;
+    }
+
+    for (const osc of oscs) {
+        osc.start();
+    }
+    return oscs;
+};
+
+const stopOscs = (oscs) => {
+    for (const osc of oscs) {
+        osc.stop();
+    }
+}
+
 const getTone = () => {
     let elements = document.getElementsByName('tone');
 
@@ -138,13 +168,23 @@ const keys = document.querySelectorAll('.key');
 
 keys.forEach(key=>{
   key.addEventListener('mousedown', ()=>playPiano(key));
+  key.addEventListener('mouseup', ()=>stopPiano(key));
+  key.addEventListener('mouseout', ()=>stopPiano(key));
 });
 
 const pianoOscs = {}
 function playPiano(key) {
   const degree = key.getAttribute('deg');
+  if (degree in pianoOscs)
+    stopOscs(pianoOscs[degree]);
   const tonic = getTonic();
   const tone = getTone();
 
-  playFor(tone(tonic, degree), 200);
+  pianoOscs[degree] = playAt(tone(tonic, degree));
+}
+
+function stopPiano(key) {
+    const degree = key.getAttribute('deg');
+    if (degree in pianoOscs)
+        stopOscs(pianoOscs[degree]);
 }
