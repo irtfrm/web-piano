@@ -6,7 +6,7 @@ const et = (tonic, degree) => {
     return 	tonic * Math.pow(octave, (1 / div) * degree);
 };
 const pure = (tonic, degree) => {
-    ratio = [1, 16/15, 10/9, 6/5, 5/4, 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8];
+    ratio = [1, 16/15, 9/8, 6/5, 5/4, 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8];
     return 	tonic * ratio[mod(degree, 12)] * (2 ** (Math.floor(degree / 12)));
 };
 const playFor = async (pitch, ms) => {
@@ -40,7 +40,7 @@ const playAt = (pitch) => {
     const oscs = [];
     const fundamental = pitch;
     const weights = [0.8, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05, 0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005];
-    const master = 0.04;
+    const master = 0.02;
 
     i = 1;
     for (const weight of weights) {
@@ -167,14 +167,13 @@ document.querySelector("#pause").addEventListener("click", () => {
 const keys = document.querySelectorAll('.key');
 
 keys.forEach(key=>{
-  key.addEventListener('mousedown', ()=>playPiano(key));
-  key.addEventListener('mouseup', ()=>stopPiano(key));
-  key.addEventListener('mouseout', ()=>stopPiano(key));
+  key.addEventListener('mousedown', ()=>playPiano(key.getAttribute('deg')));
+  key.addEventListener('mouseup', ()=>stopPiano(key.getAttribute('deg')));
+  key.addEventListener('mouseout', ()=>stopPiano(key.getAttribute('deg')));
 });
 
 const pianoOscs = {}
-function playPiano(key) {
-  const degree = key.getAttribute('deg');
+function playPiano(degree) {
   if (degree in pianoOscs)
     stopOscs(pianoOscs[degree]);
   const tonic = getTonic();
@@ -183,8 +182,32 @@ function playPiano(key) {
   pianoOscs[degree] = playAt(tone(tonic, degree));
 }
 
-function stopPiano(key) {
-    const degree = key.getAttribute('deg');
+function stopPiano(degree) {
     if (degree in pianoOscs)
         stopOscs(pianoOscs[degree]);
 }
+
+was_key_down = {};
+keyboardMap = {'q': 0, '2': 1, 'w': 2, '3': 3, 'e': 4, 'r': 5, '5': 6, 't': 7, '6': 8, 'y': 9, '7': 10, 'u': 11, 'i': 12, '9': 13, 'o': 14, '0': 15, 'p': 16, '@': 17, '^': 18, '[': 19, '\\': 20, ']': 21, }
+document.body.addEventListener('keydown',
+    event => {
+        if (event.key in keyboardMap && !(event.key in was_key_down)) {
+            was_key_down[event.key] = true;
+            playPiano(keyboardMap[event.key]);
+        }
+});
+document.body.addEventListener('keyup',
+    event => {
+        if (event.key in keyboardMap) {
+            const myPromise = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (!was_key_down[event.key]) {
+                        resolve(keyboardMap[event.key]);
+                        delete was_key_down[event.key];
+                    }
+                }, 20);
+            });
+            was_key_down[event.key] = false;
+            myPromise.then(stopPiano);
+        }
+    });

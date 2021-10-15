@@ -1,23 +1,45 @@
+.body {
+    color: rgb(29, 28, 28);
+}
+
 .piano {
   display: flex;
-  width: min(100vw, 1120px);
+  width: min(96vw, 1120px);
   height: min(28.57vw, 320px);
   margin: 1em 0;
   user-select:none;
+  cursor: pointer;
 }
 
 .white {
+  border-radius: 3%;
   width: 7.14%;
   height: 100%;
-  background-color: white;
-  border: 1px solid rgb(180, 177, 177);
+  background-color: rgb(247, 248, 244);
+  border: 1px solid rgb(177, 178, 180);
+  border-bottom: 5px solid rgb(177, 178, 180);
+}
+
+.white:active {
+    background-color: rgb(234, 236, 234);
+    transition: all 0.04s;
+    border-top: 2px solid rgb(177, 178, 180);
 }
 
 .black {
+  border-radius: 5%;
   width: 4.28%;
   height: 60%;
-  background-color: rgb(29, 28, 28);
+  background-color: rgb(46, 45, 45);
+  border-top: 2px solid rgb(103, 103, 104);
+  border-bottom: 10px solid rgb(23, 23, 24);
+  margin-top: -0.8%;
   margin-left: -2.14%;
   margin-right: -2.14%;
   z-index: 2;
+}
+
+.black:active {
+    background-color: rgb(23, 23, 24);
+    transition: all 0.04s;
 }
