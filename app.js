@@ -9,6 +9,11 @@ const pure = (tonic, degree) => {
     ratio = [1, 16/15, 9/8, 6/5, 5/4, 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8];
     return 	tonic * ratio[mod(degree, 12)] * (2 ** (Math.floor(degree / 12)));
 };
+const pureLowerRe = (tonic, degree) => {
+    ratio = [1, 16/15, 10/9, 6/5, 5/4, 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8];
+    return 	tonic * ratio[mod(degree, 12)] * (2 ** (Math.floor(degree / 12)));
+};
+
 const playFor = async (pitch, ms) => {
     const oscs = [];
     const fundamental = pitch;
@@ -167,18 +172,21 @@ document.querySelector("#pause").addEventListener("click", () => {
 const keys = document.querySelectorAll('.key');
 
 keys.forEach(key=>{
-  key.addEventListener('mousedown', ()=>playPiano(key.getAttribute('deg')));
+  key.addEventListener('mousedown', ()=>playPiano(key.getAttribute('deg'), false));
   key.addEventListener('mouseup', ()=>stopPiano(key.getAttribute('deg')));
   key.addEventListener('mouseout', ()=>stopPiano(key.getAttribute('deg')));
 });
 
 const pianoOscs = {}
-function playPiano(degree) {
+function playPiano(degree, lowerRe) {
   if (degree in pianoOscs)
     stopOscs(pianoOscs[degree]);
   const tonic = getTonic();
-  const tone = getTone();
+  let tone = getTone();
 
+  if (tone === pure && lowerRe) {
+      tone = pureLowerRe;
+  }
   pianoOscs[degree] = playAt(tone(tonic, degree));
 }
 
@@ -188,12 +196,12 @@ function stopPiano(degree) {
 }
 
 was_key_down = {};
-keyboardMap = {'q': 0, '2': 1, 'w': 2, '3': 3, 'e': 4, 'r': 5, '5': 6, 't': 7, '6': 8, 'y': 9, '7': 10, 'u': 11, 'i': 12, '9': 13, 'o': 14, '0': 15, 'p': 16, '@': 17, '^': 18, '[': 19, '\\': 20, ']': 21, }
+keyboardMap = {'q': 0, 'Q': 0, '2': 1, '"': 1, 'w': 2, 'W': 2, '3': 3, '#': 3, 'e': 4, 'E': 4, 'r': 5, 'R': 5, '5': 6, '%': 6, 't': 7, 'T': 7, '6': 8, '&': 8, 'y': 9, 'Y': 9, '7': 10, "'": 10, 'u': 11, 'U': 11, 'i': 12, 'I': 12, '9': 13, ')': 13, 'o': 14, 'O': 14, '0': 15, 'p': 16, 'P': 16, '@': 17, '`': 17, '^': 18, '~': 18, '[': 19, '{': 19, '\\': 20, '|': 20, ']': 21, }
 document.body.addEventListener('keydown',
     event => {
         if (event.key in keyboardMap && !(event.key in was_key_down)) {
             was_key_down[event.key] = true;
-            playPiano(keyboardMap[event.key]);
+            playPiano(keyboardMap[event.key], event.key==='W' || event.key==='O');
         }
 });
 document.body.addEventListener('keyup',
