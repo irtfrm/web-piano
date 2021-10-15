@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
     <title>音出し</title>
 </head>
 <body>
@@ -12,11 +13,55 @@
         <input type="radio" name="tone" value="pure">純正律
     </div>
     <div>
+        主音
+        <select id="tonic">
+            <option value=134.646>C3</option>
+            <option value=142.652>C#3</option>
+            <option value=151.135>D3</option>
+            <option value=160.122>D#3</option>
+            <option value=169.643>E3</option>
+            <option value=179.731>F3</option>
+            <option value=190.418>F#3</option>
+            <option value=201.741>G3</option>
+            <option value=213.737>G#3</option>
+            <option value=226.446>A3</option>
+            <option value=239.912>A#3</option>
+            <option value=254.178>B3</option>
+        </select>
+    </div>
+    <div>
         テンポ
         <input id="tempo" value=210>
     </div>
     <button id="play">play</button>
     <button id="pause">pause</button>
+
+    <div class="piano">
+        <div deg=0 class="key white"></div>
+        <div deg=1 class="key black"></div>
+        <div deg=2 class="key white"></div>
+        <div deg=3 class="key black"></div>
+        <div deg=4 class="key white"></div>
+        <div deg=5 class="key white"></div>
+        <div deg=6 class="key black"></div>
+        <div deg=7 class="key white"></div>
+        <div deg=8 class="key black"></div>
+        <div deg=9 class="key white"></div>
+        <div deg=10 class="key black"></div>
+        <div deg=11 class="key white"></div>
+        <div deg=12 class="key white"></div>
+        <div deg=13 class="key black"></div>
+        <div deg=14 class="key white"></div>
+        <div deg=15 class="key black"></div>
+        <div deg=16 class="key white"></div>
+        <div deg=17 class="key white"></div>
+        <div deg=18 class="key black"></div>
+        <div deg=19 class="key white"></div>
+        <div deg=20 class="key black"></div>
+        <div deg=21 class="key white"></div>
+        <div deg=22 class="key black"></div>
+        <div deg=23 class="key white"></div>
+      </div>
     <script src="app.js"></script>
 </body>
 </html>

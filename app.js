@@ -1,16 +1,17 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+const mod = (m, n) => m >= 0 ? m % n : n + m % n
 const wait = async (ms) => new Promise(resolve => setTimeout(resolve, ms));
-const et = (degree) => {
-    return 	196 * Math.pow(octave, (1 / div) * degree);
+const et = (tonic, degree) => {
+    return 	tonic * Math.pow(octave, (1 / div) * degree);
 };
-const pure = (degree) => {
+const pure = (tonic, degree) => {
     ratio = [1, 16/15, 10/9, 6/5, 5/4, 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8];
-    return 	196 * ratio[degree % 12] * (2 ** (Math.floor(degree / 12)));
+    return 	tonic * ratio[mod(degree, 12)] * (2 ** (Math.floor(degree / 12)));
 };
-const playAt = async (degree, ms, tone) => {
+const playFor = async (pitch, ms) => {
     const oscs = [];
-    const fundamental = tone(degree);
+    const fundamental = pitch;
     const weights = [0.8, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05, 0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005];
     const master = 0.04;
 
@@ -34,6 +35,7 @@ const playAt = async (degree, ms, tone) => {
         osc.stop();
     }
 };
+
 const getTone = () => {
     let elements = document.getElementsByName('tone');
 
@@ -45,12 +47,14 @@ const getTone = () => {
     }
     return tone_name === 'pure' ? pure : et;
 };
+const getTonic = () => {
+    return document.getElementById('tonic').value;
+};
 const getTempo = () => {
     return document.getElementById('tempo').value;
 };
 const div = 12;
 const octave = 2;
-const tempo = 210;
 
 const vigilate = [
     {
@@ -118,13 +122,29 @@ document.querySelector("#play").addEventListener("click", async () => {
         audioCtx.resume();
     }
     
+    const tonic = getTonic();
     const tone = getTone();
     const tempo = getTempo();
     for (const note of vigilate) {
-        await playAt(note.degree, note.duration * 60000 / 0.25 / tempo, tone);
+        await playFor(tone(tonic, note.degree), note.duration * 60000 / 0.25 / tempo);
     }
 });
 
 document.querySelector("#pause").addEventListener("click", () => {
     oscillators[0].stop();
 });
+
+const keys = document.querySelectorAll('.key');
+
+keys.forEach(key=>{
+  key.addEventListener('mousedown', ()=>playPiano(key));
+});
+
+const pianoOscs = {}
+function playPiano(key) {
+  const degree = key.getAttribute('deg');
+  const tonic = getTonic();
+  const tone = getTone();
+
+  playFor(tone(tonic, degree), 200);
+}
