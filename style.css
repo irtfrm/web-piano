@@ -2,7 +2,7 @@
     color: rgb(29, 28, 28);
 }
 
-.piano {
+#piano {
   display: flex;
   width: min(96vw, 1120px);
   height: min(28.57vw, 320px);
@@ -20,7 +20,7 @@
   border-bottom: 5px solid rgb(177, 178, 180);
 }
 
-.white:active {
+.white:active, .white.pushed {
     background-color: rgb(234, 236, 234);
     transition: all 0.04s;
     border-top: 2px solid rgb(177, 178, 180);
@@ -30,16 +30,16 @@
   border-radius: 5%;
   width: 4.28%;
   height: 60%;
-  background-color: rgb(46, 45, 45);
+  background-color: rgb(80, 80, 77);
   border-top: 2px solid rgb(103, 103, 104);
-  border-bottom: 10px solid rgb(23, 23, 24);
+  border-bottom: 12px solid rgb(23, 23, 24);
   margin-top: -0.8%;
   margin-left: -2.14%;
   margin-right: -2.14%;
   z-index: 2;
 }
 
-.black:active {
+.black:active, .black.pushed {
     background-color: rgb(23, 23, 24);
     transition: all 0.04s;
 }

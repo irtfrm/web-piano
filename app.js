@@ -76,6 +76,20 @@ keys.forEach((key) => {
   key.addEventListener("mouseout", () => stopPiano(key.getAttribute("deg")));
 });
 
+const addPushedClass = (degree) => {
+  const piano = document.getElementById('piano');
+  for (const child of piano.children) {
+    if (degree == child.getAttribute('deg'))
+      child.classList.add('pushed');
+  }
+};
+const removePushedClass = (degree) => {
+  const piano = document.getElementById('piano');
+  for (const child of piano.children) {
+    if (degree == child.getAttribute('deg'))
+      child.classList.remove('pushed');
+  }
+};
 const was_key_down = {};
 const keyboardMap = {
   q: 0,
@@ -124,6 +138,7 @@ const keyboardMap = {
 document.body.addEventListener("keydown", (event) => {
   if (event.key in keyboardMap && !(event.key in was_key_down)) {
     was_key_down[event.key] = true;
+    addPushedClass(keyboardMap[event.key]);
     playPiano(keyboardMap[event.key], event.key === "W" || event.key === "O");
   }
 });
@@ -133,6 +148,7 @@ document.body.addEventListener("keyup", (event) => {
       setTimeout(() => {
         if (!was_key_down[event.key]) {
           resolve(keyboardMap[event.key]);
+          removePushedClass(keyboardMap[event.key]);
           delete was_key_down[event.key];
         }
       }, 20);
