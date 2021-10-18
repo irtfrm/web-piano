@@ -2,6 +2,7 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 import { vigilate } from "/js/scores.js";
 import { pure, pureLowerRe } from "/js/tones.js";
 import { getTone, getTempo, getTonic } from "/js/inputs.js";
+import { organWeights, organ2Weights } from "/js/instruments.js";
 
 const wait = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -16,40 +17,18 @@ const getPeriodicFromWeights = (weights) => {
   return audioCtx.createPeriodicWave(real, imag);
 };
 
-const playFor = async (pitch, ms) => {
-  const weights = [
-    0, 0.8, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05,
-    0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005,
-    0.005, 0.005,
-  ];
-  const periodic = getPeriodicFromWeights(weights);
+const organWave = getPeriodicFromWeights(organWeights);
+const organWave2 = getPeriodicFromWeights(organ2Weights);
 
+
+const playAt = (pitch, gain) => {
   const osc = audioCtx.createOscillator();
   const gainNode = audioCtx.createGain();
+  gainNode.gain.value = gain;
   osc.frequency.value = pitch;
   osc.connect(gainNode).connect(audioCtx.destination);
-  osc.setPeriodicWave(periodic);
-
-  osc.start();
-  await wait(ms);
-  osc.stop();
-};
-
-const playAt = (pitch) => {
-  const weights = [
-    0, 1, 0.9, 0.9, 0.6, 0.3, 0.6, 0.2, 0.2, 0.17, 0.3, 0.05, 0.05, 0.05,
-    0.15, 0.02, 0.08, 0.02, 0.06, 0.01, 0.005, 0.005, 0.005, 0.005, 0.005,
-    0.005, 0.005,
-  ];
-  const periodic = getPeriodicFromWeights(weights);
-
-  const osc = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
-  gainNode.gain.value = 0.3;
-  osc.frequency.value = pitch;
-  osc.connect(gainNode).connect(audioCtx.destination);
-  osc.setPeriodicWave(periodic);
-
+  osc.setPeriodicWave(organWave2);
+  
   osc.start();
   return osc;
 };
@@ -60,6 +39,11 @@ const stopOscs = (oscs) => {
   }
 };
 
+const playFor = async (pitch, gain, ms) => {
+  const oscs = [playAt(pitch, gain)];
+  await wait(ms);
+  stopOscs(oscs);
+};
 
 document.querySelector("#play").addEventListener("click", async () => {
   if (audioCtx.state === "suspended") {
@@ -72,13 +56,14 @@ document.querySelector("#play").addEventListener("click", async () => {
   for (const note of vigilate) {
     await playFor(
       tone(tonic, note.degree),
+      0.3,
       (note.duration * 60000) / 0.25 / tempo
     );
   }
 });
 
 document.querySelector("#pause").addEventListener("click", () => {
-  oscillators[0].stop();
+  organ.stop();
 });
 
 const keys = document.querySelectorAll(".key");
@@ -167,7 +152,7 @@ function playPiano(degree, lowerRe) {
   if (tone === pure && lowerRe) {
     tone = pureLowerRe;
   }
-  pianoOscs[degree] = [playAt(tone(tonic, degree))];
+  pianoOscs[degree] = [playAt(tone(tonic, degree), 0.3)];
 }
 
 function stopPiano(degree) {
