@@ -70,13 +70,13 @@ body {
   justify-content: center;
   align-items: flex-end;
 }
+.key-desc {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin-bottom: 1em;
+}
 .white>.key-desc {
-  margin-bottom: max(1em);
   color: rgb(209, 201, 208);
-  font-weight: bold;
 }
 .black>.key-desc {
-  margin-bottom: max(1em);
   color: rgb(119, 125, 126);
-  font-weight: bold;
 }
