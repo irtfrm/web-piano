@@ -24,8 +24,8 @@ body {
 }
 #piano {
   display: flex;
-  width: min(95vw, 1020px);
-  height: min(62vw, 665px);
+  width: min(95vw, 180vh, 1020px);
+  height: min(62vw, 85vh, 665px);
   margin: 1em 0;
   user-select:none;
   cursor: pointer;
@@ -73,6 +73,7 @@ body {
 .key-desc {
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   margin-bottom: 1em;
+  user-select:none;
 }
 .white>.key-desc {
   color: rgb(209, 201, 208);
