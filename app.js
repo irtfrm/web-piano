@@ -33,6 +33,10 @@ const playAt = (pitch, gain, wave) => {
   return osc;
 };
 
+const stopOsc = (osc) => {
+  osc.stop();
+};
+
 const stopOscs = (oscs) => {
   for (const osc of oscs) {
     osc.stop();
@@ -51,22 +55,38 @@ document.querySelector("#play").addEventListener("click", async () => {
   }
 
   const tonic = getTonic();
-  const tone = getTone();
+  const tone = pureLowerRe;
   const tempo = getTempo();
   const wave = valueInstMap[getInstrumental()];
-  for (const note of vigilate) {
-    if (note.degree !== null) {
-      addPushedClass(note.degree);
-      await playFor(
-        tone(tonic, note.degree),
-        0.3,
-        (note.duration * 60000) / 0.25 / tempo,
-        wave
-      );
-      removePushedClass(note.degree);
-    } else {
-      await wait((note.duration * 60000) / 0.25 / tempo);
+
+  const trackPointers = {};
+  const trackOscs = {};
+  const player = async (score, index) => {
+    setTimeout(() => {
+      if (index in trackOscs) {
+        stopOsc(trackOscs[index]);
+        removePushedClass(score[index][trackPointers[index]]['degree']);
+        delete trackOscs[index]
+      }
+      trackPointers[index] += 1;
+      if (trackPointers[index] < score[index].length) {
+        const degree = score[index][trackPointers[index]]['degree'];
+        addPushedClass(degree);
+        if (degree !== null) {
+          trackOscs[index] = playAt(tone(tonic, degree), 0.3, wave);
+        }
+        player(score, index);
+      }
+    }, score[index][trackPointers[index]]['duration'] * 240000 / tempo)
+  };
+  for (let i = 0; i < vigilate.length; i++) {
+    trackPointers[i] = 0;
+    const degree = vigilate[i][trackPointers[i]]['degree'];
+    addPushedClass(degree);
+    if (degree !== null) {
+      trackOscs[i] = playAt(tone(tonic, degree), 0.3, wave);
     }
+    player(vigilate, i);
   }
 });
 
