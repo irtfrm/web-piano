@@ -9,6 +9,13 @@
 </head>
 <body>
     <div>
+        楽器
+        <select id="instrumental">
+            <option value="organ">オルガン1</option>
+            <option value="organ2">オルガン2</option>
+        </select>
+    </div>
+    <div>
         <input type="radio" name="tone" value="equal">平均律
         <input type="radio" name="tone" value="pure" checked="checked">純正律
     </div>
@@ -16,27 +23,28 @@
         主音
         <select id="tonic">
             <option value=134.646>C3</option>
-            <option value=142.652>C#3</option>
+            <option value=142.652>C#3/Db3</option>
             <option value=151.135>D3</option>
-            <option value=160.122>D#3</option>
+            <option value=160.122>D#3/Eb3</option>
             <option value=169.643>E3</option>
             <option value=179.731>F3</option>
-            <option value=190.418>F#3</option>
+            <option value=190.418>F#3/Gb3</option>
             <option value=201.741>G3</option>
-            <option value=213.737>G#3</option>
+            <option value=213.737>G#3/Ab3</option>
             <option value=226.446>A3</option>
-            <option value=239.912>A#3</option>
+            <option value=239.912>A#3/Bb3</option>
             <option value=254.178>B3</option>
         </select>
     </div>
-    <div>
-        テンポ
-        <input id="tempo" value=210>
-    </div>
-    <button id="play">play</button>
-    <button id="pause">pause</button>
 
     <div id="piano">
+        <div deg=-7 class="key white"></div>
+        <div deg=-6 class="key black"></div>
+        <div deg=-5 class="key white"></div>
+        <div deg=-4 class="key black"></div>
+        <div deg=-3 class="key white"></div>
+        <div deg=-2 class="key black"></div>
+        <div deg=-1 class="key white"></div>
         <div deg=0 class="key white"></div>
         <div deg=1 class="key black"></div>
         <div deg=2 class="key white"></div>
@@ -61,7 +69,19 @@
         <div deg=21 class="key white"></div>
         <div deg=22 class="key black"></div>
         <div deg=23 class="key white"></div>
+        <div deg=24 class="key white"></div>
+        <div deg=25 class="key black"></div>
+        <div deg=26 class="key white"></div>
+        <div deg=27 class="key black"></div>
+        <div deg=28 class="key white"></div>
+        <div deg=29 class="key white"></div>
       </div>
+      <div>
+        テンポ
+        <input id="tempo" value=210>
+    </div>
+    <button id="play">play</button>
+    <button id="pause">pause</button>
     <script type="module" src="./app.js"></script>
 </body>
 </html>
