@@ -17,3 +17,6 @@ export const getTonic = () => {
 export const getTempo = () => {
   return document.getElementById("tempo").value;
 };
+export const getInstrumental = () => {
+  return document.getElementById("instrumental").value;
+};

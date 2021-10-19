@@ -3,6 +3,7 @@ import { vigilate } from "/js/scores.js";
 import { pure, pureLowerRe } from "/js/tones.js";
 import { getTone, getTempo, getTonic } from "/js/inputs.js";
 import { organWeights, organ2Weights } from "/js/instruments.js";
+import { getInstrumental } from "/js/inputs.js";
 
 const wait = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -17,17 +18,16 @@ const getPeriodicFromWeights = (weights) => {
   return audioCtx.createPeriodicWave(real, imag);
 };
 
-const organWave = getPeriodicFromWeights(organWeights);
-const organWave2 = getPeriodicFromWeights(organ2Weights);
+const valueInstMap = {'organ': getPeriodicFromWeights(organWeights), 'organ2': getPeriodicFromWeights(organ2Weights)};
 
 
-const playAt = (pitch, gain) => {
+const playAt = (pitch, gain, wave) => {
   const osc = audioCtx.createOscillator();
   const gainNode = audioCtx.createGain();
   gainNode.gain.value = gain;
   osc.frequency.value = pitch;
   osc.connect(gainNode).connect(audioCtx.destination);
-  osc.setPeriodicWave(organWave2);
+  osc.setPeriodicWave(wave);
   
   osc.start();
   return osc;
@@ -39,8 +39,8 @@ const stopOscs = (oscs) => {
   }
 };
 
-const playFor = async (pitch, gain, ms) => {
-  const oscs = [playAt(pitch, gain)];
+const playFor = async (pitch, gain, ms, wave) => {
+  const oscs = [playAt(pitch, gain, wave)];
   await wait(ms);
   stopOscs(oscs);
 };
@@ -53,11 +53,13 @@ document.querySelector("#play").addEventListener("click", async () => {
   const tonic = getTonic();
   const tone = getTone();
   const tempo = getTempo();
+  const wave = valueInstMap[getInstrumental()];
   for (const note of vigilate) {
     await playFor(
       tone(tonic, note.degree),
       0.3,
-      (note.duration * 60000) / 0.25 / tempo
+      (note.duration * 60000) / 0.25 / tempo,
+      wave
     );
   }
 });
@@ -164,11 +166,12 @@ function playPiano(degree, lowerRe) {
   if (degree in pianoOscs) stopOscs(pianoOscs[degree]);
   const tonic = getTonic();
   let tone = getTone();
+  const wave = valueInstMap[getInstrumental()];
 
   if (tone === pure && lowerRe) {
     tone = pureLowerRe;
   }
-  pianoOscs[degree] = [playAt(tone(tonic, degree), 0.3)];
+  pianoOscs[degree] = [playAt(tone(tonic, degree), 0.3, wave)];
 }
 
 function stopPiano(degree) {
