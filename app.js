@@ -64,9 +64,9 @@ document.querySelector("#play").addEventListener("click", async () => {
   }
 });
 
-document.querySelector("#pause").addEventListener("click", () => {
-  organ.stop();
-});
+// document.querySelector("#pause").addEventListener("click", () => {
+//   organ.stop();
+// });
 
 const keys = document.querySelectorAll(".key");
 

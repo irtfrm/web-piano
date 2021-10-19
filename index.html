@@ -8,80 +8,85 @@
     <title>音出し</title>
 </head>
 <body>
-    <div>
-        楽器
-        <select id="instrumental">
-            <option value="organ">オルガン1</option>
-            <option value="organ2">オルガン2</option>
-        </select>
-    </div>
-    <div>
-        <input type="radio" name="tone" value="equal">平均律
-        <input type="radio" name="tone" value="pure" checked="checked">純正律
-    </div>
-    <div>
-        主音
-        <select id="tonic">
-            <option value=134.646>C3</option>
-            <option value=142.652>C#3/Db3</option>
-            <option value=151.135>D3</option>
-            <option value=160.122>D#3/Eb3</option>
-            <option value=169.643>E3</option>
-            <option value=179.731>F3</option>
-            <option value=190.418>F#3/Gb3</option>
-            <option value=201.741>G3</option>
-            <option value=213.737>G#3/Ab3</option>
-            <option value=226.446>A3</option>
-            <option value=239.912>A#3/Bb3</option>
-            <option value=254.178>B3</option>
-        </select>
+    <div class="settings">
+        <div>
+            楽器
+            <select id="instrumental">
+                <option value="organ">オルガン1</option>
+                <option value="organ2">オルガン2</option>
+            </select>
+        </div>
+        <div>
+            <input type="radio" name="tone" value="equal">平均律
+            <input type="radio" name="tone" value="pure" checked="checked">純正律
+        </div>
+        <div>
+            主音
+            <select id="tonic">
+                <option value=134.646>C3</option>
+                <option value=142.652>C#3/Db3</option>
+                <option value=151.135>D3</option>
+                <option value=160.122>D#3/Eb3</option>
+                <option value=169.643>E3</option>
+                <option value=179.731>F3</option>
+                <option value=190.418>F#3/Gb3</option>
+                <option value=201.741>G3</option>
+                <option value=213.737>G#3/Ab3</option>
+                <option value=226.446>A3</option>
+                <option value=239.912>A#3/Bb3</option>
+                <option value=254.178>B3</option>
+            </select>
+        </div>
     </div>
 
-    <div id="piano">
-        <div deg=-7 class="key white"></div>
-        <div deg=-6 class="key black"></div>
-        <div deg=-5 class="key white"></div>
-        <div deg=-4 class="key black"></div>
-        <div deg=-3 class="key white"></div>
-        <div deg=-2 class="key black"></div>
-        <div deg=-1 class="key white"></div>
-        <div deg=0 class="key white"></div>
-        <div deg=1 class="key black"></div>
-        <div deg=2 class="key white"></div>
-        <div deg=3 class="key black"></div>
-        <div deg=4 class="key white"></div>
-        <div deg=5 class="key white"></div>
-        <div deg=6 class="key black"></div>
-        <div deg=7 class="key white"></div>
-        <div deg=8 class="key black"></div>
-        <div deg=9 class="key white"></div>
-        <div deg=10 class="key black"></div>
-        <div deg=11 class="key white"></div>
-        <div deg=12 class="key white"></div>
-        <div deg=13 class="key black"></div>
-        <div deg=14 class="key white"></div>
-        <div deg=15 class="key black"></div>
-        <div deg=16 class="key white"></div>
-        <div deg=17 class="key white"></div>
-        <div deg=18 class="key black"></div>
-        <div deg=19 class="key white"></div>
-        <div deg=20 class="key black"></div>
-        <div deg=21 class="key white"></div>
-        <div deg=22 class="key black"></div>
-        <div deg=23 class="key white"></div>
-        <div deg=24 class="key white"></div>
-        <div deg=25 class="key black"></div>
-        <div deg=26 class="key white"></div>
-        <div deg=27 class="key black"></div>
-        <div deg=28 class="key white"></div>
-        <div deg=29 class="key white"></div>
-      </div>
-      <div>
-        テンポ
-        <input id="tempo" value=210>
+    <div class="piano-wrapper">
+        <div id="piano">
+            <div deg=-7 class="key white"><div class="key-desc">Q</div></div>
+            <div deg=-6 class="key black"><div class="key-desc">2</div></div>
+            <div deg=-5 class="key white"><div class="key-desc">W</div></div>
+            <div deg=-4 class="key black"><div class="key-desc">3</div></div>
+            <div deg=-3 class="key white"><div class="key-desc">E</div></div>
+            <div deg=-2 class="key black"><div class="key-desc">4</div></div>
+            <div deg=-1 class="key white"><div class="key-desc">R</div></div>
+            <div deg=0 class="key white"><div class="key-desc">T</div></div>
+            <div deg=1 class="key black"><div class="key-desc">6</div></div>
+            <div deg=2 class="key white"><div class="key-desc">Y</div></div>
+            <div deg=3 class="key black"><div class="key-desc">7</div></div>
+            <div deg=4 class="key white"><div class="key-desc">U</div></div>
+            <div deg=5 class="key white"><div class="key-desc">I</div></div>
+            <div deg=6 class="key black"><div class="key-desc">9</div></div>
+            <div deg=7 class="key white"><div class="key-desc">O</div></div>
+            <div deg=8 class="key black"><div class="key-desc">0</div></div>
+            <div deg=9 class="key white"><div class="key-desc">P</div></div>
+            <div deg=10 class="key black"><div class="key-desc">-</div></div>
+            <div deg=11 class="key white"><div class="key-desc">@</div></div>
+            <div deg=12 class="key white"><div class="key-desc">[<BR>Z</div></div>
+            <div deg=13 class="key black"><div class="key-desc">S</div></div>
+            <div deg=14 class="key white"><div class="key-desc">X</div></div>
+            <div deg=15 class="key black"><div class="key-desc">D</div></div>
+            <div deg=16 class="key white"><div class="key-desc">C</div></div>
+            <div deg=17 class="key white"><div class="key-desc">V</div></div>
+            <div deg=18 class="key black"><div class="key-desc">G</div></div>
+            <div deg=19 class="key white"><div class="key-desc">B</div></div>
+            <div deg=20 class="key black"><div class="key-desc">H</div></div>
+            <div deg=21 class="key white"><div class="key-desc">N</div></div>
+            <div deg=22 class="key black"><div class="key-desc">J</div></div>
+            <div deg=23 class="key white"><div class="key-desc">M</div></div>
+            <div deg=24 class="key white"><div class="key-desc">,</div></div>
+            <div deg=25 class="key black"><div class="key-desc">L</div></div>
+            <div deg=26 class="key white"><div class="key-desc">.</div></div>
+            <div deg=27 class="key black"><div class="key-desc">;</div></div>
+            <div deg=28 class="key white"><div class="key-desc">/</div></div>
+            <div deg=29 class="key white"><div class="key-desc">_</div></div>
+        </div>
     </div>
-    <button id="play">play</button>
-    <button id="pause">pause</button>
+    <div class="play-settings">
+        <div>
+            テンポ
+            <input id="tempo" value=210>
+        </div>
+        <button id="play">play</button>
+    </div>
     <script type="module" src="./app.js"></script>
 </body>
 </html>
