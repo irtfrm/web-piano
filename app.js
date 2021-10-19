@@ -55,14 +55,18 @@ document.querySelector("#play").addEventListener("click", async () => {
   const tempo = getTempo();
   const wave = valueInstMap[getInstrumental()];
   for (const note of vigilate) {
-    addPushedClass(note.degree);
-    await playFor(
-      tone(tonic, note.degree),
-      0.3,
-      (note.duration * 60000) / 0.25 / tempo,
-      wave
-    );
-    removePushedClass(note.degree);
+    if (note.degree !== null) {
+      addPushedClass(note.degree);
+      await playFor(
+        tone(tonic, note.degree),
+        0.3,
+        (note.duration * 60000) / 0.25 / tempo,
+        wave
+      );
+      removePushedClass(note.degree);
+    } else {
+      await wait((note.duration * 60000) / 0.25 / tempo);
+    }
   }
 });
 

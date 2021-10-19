@@ -1,5 +1,9 @@
 export const vigilate = [
   {
+    degree: null,
+    duration: 0.25,
+  },
+  {
     degree: 2,
     duration: 0.75,
   },
