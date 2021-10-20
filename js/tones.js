@@ -26,9 +26,9 @@ export const pure = (tonic, degree) => {
 export const pureLowerRe = (tonic, degree) => {
   const ratio = [
     1,
-    16 / 15,
+    25 / 24,
     10 / 9,
-    6 / 5,
+    75 / 64,
     5 / 4,
     4 / 3,
     45 / 32,

@@ -1,6 +1,6 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 import { vigilate } from "/js/scores.js";
-import { pure, pureLowerRe } from "/js/tones.js";
+import { pure, pureLowerRe, et } from "/js/tones.js";
 import { getTone, getTempo, getTonic } from "/js/inputs.js";
 import { organWeights, organ2Weights } from "/js/instruments.js";
 import { getInstrumental } from "/js/inputs.js";
@@ -64,7 +64,7 @@ document.querySelector("#play").addEventListener("click", async () => {
   }
 
   const tonic = getTonic();
-  const tone = pureLowerRe;
+  const tone = getTone === pure ? pureLowerRe : et;
   const tempo = getTempo();
   const wave = valueInstMap[getInstrumental()];
 
