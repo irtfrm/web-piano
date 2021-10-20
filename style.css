@@ -61,7 +61,7 @@ body {
 }
 
 .black:active, .black.pushed {
-    background-color: rgb(35, 68, 128);
+    background-color: rgb(35, 78, 128);
     transition: all 0.04s;
 }
 
