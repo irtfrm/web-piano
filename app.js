@@ -24,12 +24,19 @@ const valueInstMap = {
 };
 
 const playAt = (pitch, gain, wave) => {
+  const attack = 0.04;
   const osc = audioCtx.createOscillator();
   const gainNode = audioCtx.createGain();
   gainNode.gain.value = gain;
   osc.frequency.value = pitch;
   osc.connect(gainNode).connect(audioCtx.destination);
   osc.setPeriodicWave(wave);
+  const startTime = audioCtx.currentTime;
+  gainNode.gain.setValueAtTime(0, startTime);
+  gainNode.gain.linearRampToValueAtTime(
+    gainNode.gain.value,
+    startTime + attack
+  );
 
   osc.start();
   return { osc: osc, gain: gainNode };
