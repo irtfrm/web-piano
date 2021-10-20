@@ -102,6 +102,12 @@ keys.forEach((key) => {
   );
   key.addEventListener("mouseup", () => stopPiano(key.getAttribute("deg")));
   key.addEventListener("mouseout", () => stopPiano(key.getAttribute("deg")));
+  key.addEventListener("mouseout", () => stopPiano(key.getAttribute("deg")));
+  key.addEventListener("touchstart", () =>
+    playPiano(key.getAttribute("deg"), false)
+  );
+  key.addEventListener("touchend", () => stopPiano(key.getAttribute("deg")));
+  key.addEventListener("touchcancel", () => stopPiano(key.getAttribute("deg")));
 });
 
 const addPushedClass = (degree) => {
