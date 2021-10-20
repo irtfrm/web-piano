@@ -39,16 +39,10 @@ const stopOsc = (osc) => {
   osc.stop();
 };
 
-const stopOscs = (oscs) => {
-  for (const osc of oscs) {
-    osc.stop();
-  }
-};
-
 const playFor = async (pitch, gain, ms, wave) => {
-  const oscs = [playAt(pitch, gain, wave)];
+  const osc = playAt(pitch, gain, wave);
   await wait(ms);
-  stopOscs(oscs);
+  stopOsc(osc);
 };
 
 document.querySelector("#play").addEventListener("click", async () => {
@@ -227,7 +221,7 @@ document.body.addEventListener("keyup", (event) => {
 const pianoOscs = {};
 
 function playPiano(degree, lowerRe) {
-  if (degree in pianoOscs) stopOscs(pianoOscs[degree]);
+  if (degree in pianoOscs) stopOsc(pianoOscs[degree]);
   const tonic = getTonic();
   let tone = getTone();
   const wave = valueInstMap[getInstrumental()];
@@ -235,9 +229,9 @@ function playPiano(degree, lowerRe) {
   if (tone === pure && lowerRe) {
     tone = pureLowerRe;
   }
-  pianoOscs[degree] = [playAt(tone(tonic, degree), 0.3, wave)];
+  pianoOscs[degree] = playAt(tone(tonic, degree), 0.3, wave);
 }
 
 function stopPiano(degree) {
-  if (degree in pianoOscs) stopOscs(pianoOscs[degree]);
+  if (degree in pianoOscs) stopOsc(pianoOscs[degree]);
 }
