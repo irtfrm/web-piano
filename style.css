@@ -5,7 +5,12 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
-  background-image: linear-gradient( 68.4deg,  rgba(248,182,204,1) 0.5%, rgba(192,198,230,1) 49%, rgba(225,246,240,1) 99.8% );
+  background-image: linear-gradient(
+    68.4deg,
+    rgba(248, 182, 204, 1) 0.5%,
+    rgba(192, 198, 230, 1) 49%,
+    rgba(225, 246, 240, 1) 99.8%
+  );
 }
 
 .settings {
@@ -14,8 +19,7 @@ body {
 }
 .play-settings {
   display: flex;
-  justify-content:space-around;
-  
+  justify-content: space-around;
 }
 
 .piano-wrapper {
@@ -27,7 +31,9 @@ body {
   width: min(95vw, 180vh, 1020px);
   height: min(62vw, 85vh, 665px);
   margin: 1em 0;
-  user-select:none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
   cursor: pointer;
   flex-wrap: wrap;
   align-content: space-around;
@@ -42,9 +48,10 @@ body {
   border-bottom: 5px solid rgb(104, 106, 109);
 }
 
-.white:active, .white.pushed {
-    background-color: rgb(191, 226, 248);
-    transition: all 0.04s;
+.white:active,
+.white.pushed {
+  background-color: rgb(191, 226, 248);
+  transition: all 0.04s;
 }
 
 .black {
@@ -60,9 +67,10 @@ body {
   z-index: 2;
 }
 
-.black:active, .black.pushed {
-    background-color: rgb(35, 78, 128);
-    transition: all 0.04s;
+.black:active,
+.black.pushed {
+  background-color: rgb(35, 78, 128);
+  transition: all 0.04s;
 }
 
 .key {
@@ -71,13 +79,15 @@ body {
   align-items: flex-end;
 }
 .key-desc {
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   margin-bottom: 1em;
-  user-select:none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
-.white>.key-desc {
+.white > .key-desc {
   color: rgb(209, 201, 208);
 }
-.black>.key-desc {
+.black > .key-desc {
   color: rgb(119, 125, 126);
 }
