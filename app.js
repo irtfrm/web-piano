@@ -32,17 +32,23 @@ const playAt = (pitch, gain, wave) => {
   osc.setPeriodicWave(wave);
 
   osc.start();
-  return osc;
+  return { osc: osc, gain: gainNode };
 };
 
-const stopOsc = (osc) => {
-  osc.stop();
+const stopOsc = (nodes) => {
+  const osc = nodes.osc;
+  const gainNode = nodes.gain;
+  const release = 0.1;
+  const stopTime = audioCtx.currentTime;
+  gainNode.gain.setValueAtTime(gainNode.gain.value, stopTime);
+  gainNode.gain.linearRampToValueAtTime(0, stopTime + release);
+  osc.stop(stopTime + release);
 };
 
 const playFor = async (pitch, gain, ms, wave) => {
-  const osc = playAt(pitch, gain, wave);
+  const nodes = playAt(pitch, gain, wave);
   await wait(ms);
-  stopOsc(osc);
+  stopOsc(nodes);
 };
 
 document.querySelector("#play").addEventListener("click", async () => {
