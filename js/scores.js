@@ -184,5 +184,5 @@ export const vigilate = [
       degree: 6,
       duration: 0.5,
     },
-  ]
+  ],
 ];

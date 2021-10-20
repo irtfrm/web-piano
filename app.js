@@ -18,8 +18,10 @@ const getPeriodicFromWeights = (weights) => {
   return audioCtx.createPeriodicWave(real, imag);
 };
 
-const valueInstMap = {'organ': getPeriodicFromWeights(organWeights), 'organ2': getPeriodicFromWeights(organ2Weights)};
-
+const valueInstMap = {
+  organ: getPeriodicFromWeights(organWeights),
+  organ2: getPeriodicFromWeights(organ2Weights),
+};
 
 const playAt = (pitch, gain, wave) => {
   const osc = audioCtx.createOscillator();
@@ -28,7 +30,7 @@ const playAt = (pitch, gain, wave) => {
   osc.frequency.value = pitch;
   osc.connect(gainNode).connect(audioCtx.destination);
   osc.setPeriodicWave(wave);
-  
+
   osc.start();
   return osc;
 };
@@ -65,23 +67,23 @@ document.querySelector("#play").addEventListener("click", async () => {
     setTimeout(() => {
       if (index in trackOscs) {
         stopOsc(trackOscs[index]);
-        removePushedClass(score[index][trackPointers[index]]['degree']);
-        delete trackOscs[index]
+        removePushedClass(score[index][trackPointers[index]]["degree"]);
+        delete trackOscs[index];
       }
       trackPointers[index] += 1;
       if (trackPointers[index] < score[index].length) {
-        const degree = score[index][trackPointers[index]]['degree'];
+        const degree = score[index][trackPointers[index]]["degree"];
         addPushedClass(degree);
         if (degree !== null) {
           trackOscs[index] = playAt(tone(tonic, degree), 0.3, wave);
         }
         player(score, index);
       }
-    }, score[index][trackPointers[index]]['duration'] * 240000 / tempo)
+    }, (score[index][trackPointers[index]]["duration"] * 240000) / tempo);
   };
   for (let i = 0; i < vigilate.length; i++) {
     trackPointers[i] = 0;
-    const degree = vigilate[i][trackPointers[i]]['degree'];
+    const degree = vigilate[i][trackPointers[i]]["degree"];
     addPushedClass(degree);
     if (degree !== null) {
       trackOscs[i] = playAt(tone(tonic, degree), 0.3, wave);
@@ -111,17 +113,15 @@ keys.forEach((key) => {
 });
 
 const addPushedClass = (degree) => {
-  const piano = document.getElementById('piano');
+  const piano = document.getElementById("piano");
   for (const child of piano.children) {
-    if (degree == child.getAttribute('deg'))
-      child.classList.add('pushed');
+    if (degree == child.getAttribute("deg")) child.classList.add("pushed");
   }
 };
 const removePushedClass = (degree) => {
-  const piano = document.getElementById('piano');
+  const piano = document.getElementById("piano");
   for (const child of piano.children) {
-    if (degree == child.getAttribute('deg'))
-      child.classList.remove('pushed');
+    if (degree == child.getAttribute("deg")) child.classList.remove("pushed");
   }
 };
 const was_key_down = {};
@@ -137,7 +137,7 @@ const keyboardMap = {
   e: -3,
   E: -3,
   4: -2,
-  "$": -2,
+  $: -2,
   r: -1,
   R: -1,
   t: 0,
@@ -165,41 +165,41 @@ const keyboardMap = {
   "`": 11,
   "[": 12,
   "{": 12,
-  "z": 12,
-  "Z": 12,
-  "s": 13,
-  "S": 13,
-  "x": 14,
-  "X": 14,
-  "d": 15,
-  "D": 15,
-  "c": 16,
-  "C": 16,
-  "v": 17,
-  "V": 17,
-  "g": 18,
-  "G": 18,
-  "b": 19,
-  "B": 19,
-  "h": 20,
-  "H": 20,
-  "n": 21,
-  "N": 21,
-  "j": 22,
-  "J": 22,
-  "m": 23,
-  "M": 23,
+  z: 12,
+  Z: 12,
+  s: 13,
+  S: 13,
+  x: 14,
+  X: 14,
+  d: 15,
+  D: 15,
+  c: 16,
+  C: 16,
+  v: 17,
+  V: 17,
+  g: 18,
+  G: 18,
+  b: 19,
+  B: 19,
+  h: 20,
+  H: 20,
+  n: 21,
+  N: 21,
+  j: 22,
+  J: 22,
+  m: 23,
+  M: 23,
   ",": 24,
   "<": 24,
-  "l": 25,
-  "L": 25,
+  l: 25,
+  L: 25,
   ".": 26,
   ">": 26,
   ";": 27,
   "+": 27,
   "/": 28,
   "?": 28,
-  "_": 29,
+  _: 29,
 };
 document.body.addEventListener("keydown", (event) => {
   if (event.key in keyboardMap && !(event.key in was_key_down)) {
