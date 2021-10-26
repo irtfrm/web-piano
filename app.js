@@ -74,15 +74,18 @@ document.querySelector("#play").addEventListener("click", async () => {
     setTimeout(() => {
       if (index in trackOscs) {
         stopOsc(trackOscs[index]);
-        removePushedClass(score[index][trackPointers[index]]["degree"]);
+        removePushedClass(
+          score[index][trackPointers[index]]["degree"] - tonic.shift
+        );
         delete trackOscs[index];
       }
       trackPointers[index] += 1;
       if (trackPointers[index] < score[index].length) {
-        const degree = score[index][trackPointers[index]]["degree"];
-        addPushedClass(degree);
+        let degree = score[index][trackPointers[index]]["degree"];
         if (degree !== null) {
-          trackOscs[index] = playAt(tone(tonic, degree), 0.3, wave);
+          degree -= tonic.shift;
+          addPushedClass(degree);
+          trackOscs[index] = playAt(tone(tonic.hz, degree), 0.3, wave);
         }
         player(score, index);
       }
@@ -90,10 +93,11 @@ document.querySelector("#play").addEventListener("click", async () => {
   };
   for (const i in vigilate) {
     trackPointers[i] = 0;
-    const degree = vigilate[i][trackPointers[i]]["degree"];
-    addPushedClass(degree);
+    let degree = vigilate[i][trackPointers[i]]["degree"];
     if (degree !== null) {
-      trackOscs[i] = playAt(tone(tonic, degree), 0.3, wave);
+      degree -= tonic.shift;
+      addPushedClass(degree);
+      trackOscs[i] = playAt(tone(tonic.hz, degree), 0.3, wave);
     }
     player(vigilate, i);
   }
@@ -242,7 +246,7 @@ function playPiano(degree, lowerRe) {
   if (tone === pure && lowerRe) {
     tone = pureLowerRe;
   }
-  pianoOscs[degree] = playAt(tone(tonic, degree), 0.3, wave);
+  pianoOscs[degree] = playAt(tone(tonic.hz, degree - tonic.shift), 0.3, wave);
 }
 
 function stopPiano(degree) {
