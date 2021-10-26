@@ -88,7 +88,7 @@ document.querySelector("#play").addEventListener("click", async () => {
       }
     }, (score[index][trackPointers[index]]["duration"] * 240000) / tempo);
   };
-  for (let i = 0; i < vigilate.length; i++) {
+  for (const i in vigilate) {
     trackPointers[i] = 0;
     const degree = vigilate[i][trackPointers[i]]["degree"];
     addPushedClass(degree);

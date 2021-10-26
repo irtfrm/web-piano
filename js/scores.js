@@ -1,5 +1,5 @@
-export const vigilate = [
-  [
+export const vigilate = {
+  Soprano: [
     {
       degree: 9,
       duration: 1.5,
@@ -73,7 +73,7 @@ export const vigilate = [
       duration: 2,
     },
   ],
-  [
+  Alto: [
     {
       degree: null,
       duration: 0.5,
@@ -186,8 +186,48 @@ export const vigilate = [
       degree: 4,
       duration: 1,
     },
+    {
+      degree: null,
+      duration: 0.5,
+    },
+    {
+      degree: 4,
+      duration: 0.75,
+    },
+    {
+      degree: 6,
+      duration: 0.25,
+    },
+    {
+      degree: 7,
+      duration: 0.75,
+    },
+    {
+      degree: 6,
+      duration: 0.25,
+    },
+    {
+      degree: 7,
+      duration: 0.25,
+    },
+    {
+      degree: 9,
+      duration: 0.25,
+    },
+    {
+      degree: 11,
+      duration: 0.25,
+    },
+    {
+      degree: 12,
+      duration: 0.25,
+    },
+    {
+      degree: 11,
+      duration: 0.75,
+    },
   ],
-  [
+  Tenor: [
     {
       degree: null,
       duration: 3.5,
@@ -273,7 +313,7 @@ export const vigilate = [
       duration: 0.25,
     },
   ],
-  [
+  Baritone: [
     {
       degree: null,
       duration: 10,
@@ -295,7 +335,7 @@ export const vigilate = [
       duration: 2,
     },
   ],
-  [
+  Bass: [
     {
       degree: null,
       duration: 10.5,
@@ -329,4 +369,4 @@ export const vigilate = [
       duration: 2,
     },
   ],
-];
+};
