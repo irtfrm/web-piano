@@ -1,6 +1,11 @@
-import { et, pure } from "/js/tones.js";
+import { et, pure, pythagorean } from "/js/tones.js";
 import { tonics } from "/js/tonics.js";
 export const getTone = () => {
+  const toneMap = {
+    pure: pure,
+    "12et": et,
+    pythagorean: pythagorean,
+  };
   let elements = document.getElementsByName("tone");
 
   let tone_name = "";
@@ -9,7 +14,7 @@ export const getTone = () => {
       tone_name = element.value;
     }
   }
-  return tone_name === "pure" ? pure : et;
+  return toneMap[tone_name];
 };
 export const getTonic = () => {
   return tonics[document.getElementById("tonic").value];

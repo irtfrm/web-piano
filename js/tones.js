@@ -40,3 +40,21 @@ export const pureLowerRe = (tonic, degree) => {
   ];
   return tonic * ratio[mod(degree, 12)] * 2 ** Math.floor(degree / 12);
 };
+
+export const pythagorean = (tonic, degree) => {
+  const ratio = [
+    1,
+    256 / 243,
+    9 / 8,
+    32 / 27,
+    81 / 64,
+    4 / 3,
+    729 / 512,
+    3 / 2,
+    128 / 81,
+    27 / 16,
+    16 / 9,
+    243 / 128,
+  ];
+  return tonic * ratio[mod(degree, 12)] * 2 ** Math.floor(degree / 12);
+};
