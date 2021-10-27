@@ -25,3 +25,6 @@ export const getTempo = () => {
 export const getInstrumental = () => {
   return document.getElementById("instrumental").value;
 };
+export const getVolume = () => {
+  return document.getElementById("volume").value;
+};

@@ -4,6 +4,7 @@ import { pure, pureLowerRe, et } from "/js/tones.js";
 import { getTone, getTempo, getTonic } from "/js/inputs.js";
 import { organWeights, organ2Weights } from "/js/instruments.js";
 import { getInstrumental } from "/js/inputs.js";
+import { getVolume } from "/js/inputs.js";
 
 const wait = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -52,12 +53,6 @@ const stopOsc = (nodes) => {
   osc.stop(stopTime + release);
 };
 
-const playFor = async (pitch, gain, ms, wave) => {
-  const nodes = playAt(pitch, gain, wave);
-  await wait(ms);
-  stopOsc(nodes);
-};
-
 document.querySelector("#play").addEventListener("click", async () => {
   if (audioCtx.state === "suspended") {
     audioCtx.resume();
@@ -66,6 +61,7 @@ document.querySelector("#play").addEventListener("click", async () => {
   const tonic = getTonic();
   const tone = getTone === pure ? pureLowerRe : et;
   const tempo = getTempo();
+  const volume = getVolume();
   const wave = valueInstMap[getInstrumental()];
 
   const trackPointers = {};
@@ -85,7 +81,7 @@ document.querySelector("#play").addEventListener("click", async () => {
         if (degree !== null) {
           degree -= tonic.shift;
           addPushedClass(degree);
-          trackOscs[index] = playAt(tone(tonic.hz, degree), 0.3, wave);
+          trackOscs[index] = playAt(tone(tonic.hz, degree), volume, wave);
         }
         player(score, index);
       }
@@ -97,7 +93,7 @@ document.querySelector("#play").addEventListener("click", async () => {
     if (degree !== null) {
       degree -= tonic.shift;
       addPushedClass(degree);
-      trackOscs[i] = playAt(tone(tonic.hz, degree), 0.3, wave);
+      trackOscs[i] = playAt(tone(tonic.hz, degree), volume, wave);
     }
     player(vigilate, i);
   }
@@ -241,12 +237,17 @@ function playPiano(degree, lowerRe) {
   if (degree in pianoOscs) stopOsc(pianoOscs[degree]);
   const tonic = getTonic();
   let tone = getTone();
+  const volume = getVolume();
   const wave = valueInstMap[getInstrumental()];
 
   if (tone === pure && lowerRe) {
     tone = pureLowerRe;
   }
-  pianoOscs[degree] = playAt(tone(tonic.hz, degree - tonic.shift), 0.3, wave);
+  pianoOscs[degree] = playAt(
+    tone(tonic.hz, degree - tonic.shift),
+    volume,
+    wave
+  );
 }
 
 function stopPiano(degree) {
